@@ -9,7 +9,7 @@ Instancer tersebut akan menyimpan flag dalam env variable `FLAG`, maka anda juga
 _Service_ dinyatakan berhasil dipasang apabila saat dilakukan `nc <IP SERVER> <MACHINE PORT>` (Windows: `netcat <IP SERVER> <MACHINE PORT>`) akan mengembalikan respon berikut:
 ```
 WELCOME WELCome Welcome welcome...
-FLAG: COMPFEST18{tc_pwm_<random_4_char_hex>}
+COMPFEST18{tc_pwm_<random_16>}
 Enter 'exit' if you want to exit.
 >>
 ```
