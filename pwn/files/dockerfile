@@ -1,0 +1,42 @@
+# docker build -t pwn .
+# docker run -d -p 4321:4321 --rm pwn
+
+# build
+FROM ubuntu:18.04 AS builder
+
+RUN apt-get update && apt-get install -y g++
+
+WORKDIR /build
+COPY gema.cpp .
+
+RUN g++ -o gema gema.cpp
+
+#run
+FROM ubuntu:18.04
+
+ENV user=compfest18
+ENV chall_port=4321
+
+RUN apt-get update \
+    && apt-get install -y socat \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m $user
+
+WORKDIR /home/$user
+
+COPY --from=builder /build/gema /home/$user/gema
+COPY ./flag.txt /home/$user/flag.txt
+
+RUN chown -R root:$user /home/$user
+RUN chmod 750 /home/$user/gema
+RUN chmod 440 /home/$user/flag.txt
+
+USER $user
+
+EXPOSE $chall_port
+
+CMD ["socat", \
+    "-T60", \
+    "TCP-LISTEN:4321,reuseaddr,fork", \
+    "EXEC:./gema"]
