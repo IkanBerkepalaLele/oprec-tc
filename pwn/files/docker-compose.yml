@@ -1,0 +1,9 @@
+services:
+  gemaa_pwn:
+    build: .
+    image: gemaa_pwn
+    ports:
+      - "15565:4321"
+    environment:
+      - FLAG=COMPFEST18{tc_pwm_TEST_6767676767676767}
+    restart: on-failure
